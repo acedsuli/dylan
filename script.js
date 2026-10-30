@@ -153,16 +153,23 @@ function renderLoaded(){
 }
 
 /* boot */
+const BOOT_SLOW = 3;   /* 1 = current speed, 3 = three times slower */
+
 (async()=>{
   const log=$("bootlog");
-  const type=async s=>{for(const ch of s){log.textContent+=ch;await sleep(ch===" "||ch==="."?12:22+Math.random()*38);}};
-  await sleep(400);
-  for(const l of ["ARCHIVE SYSTEM v1.0 BY SULIMAN","checking memory .......... ok","mounting records ......... ok","balancing karmas ................ ok","","ready."]){
-    if(l.endsWith(" ok")){ await type(l.slice(0,-2)); await sleep(260); log.textContent+="ok"; }
+  const type=async s=>{
+    for(const ch of s){
+      log.textContent+=ch;
+      await sleep((ch===" "||ch==="." ? 12 : 22+Math.random()*38) * BOOT_SLOW);
+    }
+  };
+  await sleep(400 * BOOT_SLOW);
+  for(const l of ["ARCHIVE SYSTEM v1.0","checking memory .......... ok","mounting records ......... ok","balancing karmas ................ ok","","ready."]){
+    if(l.endsWith(" ok")){ await type(l.slice(0,-2)); await sleep(260 * BOOT_SLOW); log.textContent+="ok"; }
     else await type(l);
-    log.textContent+="\n"; await sleep(l?200:120);
+    log.textContent+="\n"; await sleep((l?200:120) * BOOT_SLOW);
   }
-  await sleep(700); show("prompt"); $("q").focus();
+  await sleep(700 * BOOT_SLOW); show("prompt"); $("q").focus();
 })();
 
 /* scramble text into place */
